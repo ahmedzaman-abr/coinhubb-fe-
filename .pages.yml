@@ -1,0 +1,85 @@
+# Editor config for Pages CMS (https://pagescms.org): sign in with GitHub,
+# open this repo, and write stories from your phone. Saving commits to GitHub,
+# and the host rebuilds the site automatically.
+media:
+  input: public/uploads
+  output: /uploads
+
+content:
+  - name: stories
+    label: Stories
+    type: collection
+    path: src/content/stories
+    filename: "{primary}.md"
+    view:
+      fields: [title, section, date, draft]
+      default:
+        sort: date
+        order: desc
+    fields:
+      - { name: title, label: Headline, type: string, required: true }
+      - { name: dek, label: Subheading, type: text, required: true }
+      - name: section
+        label: Section
+        type: select
+        required: true
+        options:
+          values:
+            - { value: coin-scene, label: Coin Scene }
+            - { value: bag-talk, label: Bag Talk }
+            - { value: geek-shit, label: Geek Shit }
+            - { value: wtf, label: WTF }
+            - { value: bro-what, label: "Bro, What?" }
+      - { name: author, label: Author, type: string, default: CoinMobb }
+      - { name: date, label: Date, type: date, required: true }
+      - { name: image, label: Image, type: image }
+      - { name: imageCaption, label: Image caption and credit, type: string }
+      - { name: lead, label: Pin as homepage lead, type: boolean, default: false }
+      - { name: hot, label: "Hot Shit position (1-5, leave empty if not hot)", type: number }
+      - { name: guide, label: "Guide to plug at the end (guide file name, e.g. crypto-without-scams)", type: string }
+      - { name: tags, label: Tags, type: string, list: true }
+      - { name: draft, label: Draft (hidden from the site), type: boolean, default: true }
+      - { name: body, label: Story, type: rich-text }
+
+  - name: guides
+    label: Mobb Guides
+    type: collection
+    path: src/content/guides
+    filename: "{primary}.md"
+    view:
+      fields: [title, price, draft]
+    fields:
+      - { name: title, label: Title, type: string, required: true }
+      - { name: blurb, label: One-line pitch, type: text, required: true }
+      - { name: price, label: "Price (e.g. Rs 999)", type: string, required: true }
+      - { name: level, label: Level number on the cartridge, type: number, default: 1 }
+      - { name: order, label: Order in the shop, type: number, default: 0 }
+      - { name: buyUrl, label: Checkout link from your payment provider, type: string }
+      - { name: cover, label: Cover image, type: image }
+      - { name: draft, label: Draft (hidden from the site), type: boolean, default: true }
+      - { name: body, label: "What's inside", type: rich-text }
+
+  - name: settings
+    label: Site settings
+    type: file
+    path: src/data/site.json
+    format: json
+    fields:
+      - { name: name, type: string }
+      - { name: tagline, type: string }
+      - { name: dropDay, label: Day The Drop goes out, type: string }
+      - { name: newsletterAction, label: Newsletter form URL from your email provider, type: string }
+      - name: social
+        type: object
+        fields:
+          - { name: instagram, type: string }
+          - { name: tiktok, type: string }
+          - { name: x, type: string }
+      - name: ticker
+        label: Price ticker
+        type: object
+        list: true
+        fields:
+          - { name: label, type: string }
+          - { name: value, type: string }
+          - { name: change, type: string }

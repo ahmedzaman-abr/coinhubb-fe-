@@ -1,0 +1,43 @@
+---
+import '../styles/global.css';
+import site from '../data/site.json';
+interface Props { title?: string; description?: string; image?: string; type?: 'website' | 'article' }
+const { title, description = 'Money, tech and internet stuff for Pakistan. No hype, no "guaranteed returns".', image = '/og.png', type = 'website' } = Astro.props;
+const full = title ? `${title} · ${site.name}` : `${site.name} · ${site.tagline}`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const og = new URL(image, Astro.site);
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>{full}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  <meta property="og:type" content={type} />
+  <meta property="og:site_name" content={site.name} />
+  <meta property="og:title" content={title ?? site.name} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:image" content={og} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="theme-color" content="#11110E" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="/icon-192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=JetBrains+Mono:wght@500;700&family=Silkscreen&family=Press+Start+2P&display=swap" />
+</head>
+<body>
+  <slot />
+  <script>
+    import { boot, paintAll, wireMenu, wireDrop } from '../lib/retro';
+    boot();
+    paintAll();
+    wireMenu();
+    wireDrop();
+  </script>
+</body>
+</html>

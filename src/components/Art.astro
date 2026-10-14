@@ -1,0 +1,11 @@
+---
+// Story image. Falls back to generated pixel art (painted client-side) when a story has no image.
+interface Props { src?: string; alt?: string; seed: string; night?: boolean; class?: string; eager?: boolean }
+const { src, alt = '', seed, night = false, class: cls, eager = false } = Astro.props;
+const n = [...seed].reduce((a, c) => (a * 31 + c.charCodeAt(0)) % 2147483647, 7) || 1;
+---
+<div class:list={['img', cls]}>
+  {src
+    ? <img src={src} alt={alt} loading={eager ? 'eager' : 'lazy'} decoding="async" />
+    : <canvas data-seed={n} data-kind={night ? 'night' : 'day'} aria-hidden="true"></canvas>}
+</div>

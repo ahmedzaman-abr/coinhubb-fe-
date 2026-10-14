@@ -1,0 +1,18 @@
+---
+import Coin from './Coin.astro';
+import site from '../data/site.json';
+---
+<footer class="foot">
+  <div class="wrap">
+    <div>
+      <div class="w"><Coin fg="#F1EEE5" />COINMOBB</div>
+      <span class="tag">{site.tagline} Made in Pakistan.</span>
+    </div>
+    <div class="links">
+      <div><h3>READ</h3><ul><li><a href="/s/coin-scene/">The Scene</a></li><li><a href="/s/bro-what/">Bro, What?</a></li><li><a href="/s/wtf/">WTF</a></li></ul></div>
+      <div><h3>SHOP</h3><ul><li><a href="/guides/">Mobb Guides</a></li><li><a href="/#drop">The Drop</a></li></ul></div>
+      <div><h3>FOLLOW</h3><ul><li><a href={site.social.instagram} rel="me">Instagram</a></li><li><a href={site.social.tiktok} rel="me">TikTok</a></li><li><a href={site.social.x} rel="me">X</a></li></ul></div>
+    </div>
+    <p>Nothing on CoinMobb is financial advice. We explain things; you make your own calls. Crypto is risky and rules in Pakistan are still evolving.</p>
+  </div>
+</footer>

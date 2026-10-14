@@ -1,0 +1,100 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Drop from '../components/Drop.astro';
+import Art from '../components/Art.astro';
+import Cart from '../components/Cart.astro';
+import { stories, guides, readMins, url, SECTIONS } from '../lib/content';
+
+const all = await stories();
+const lead = all.find(s => s.data.lead) ?? all[0];
+const rest = all.filter(s => s !== lead);
+const also = rest.filter(s => s.data.section !== 'bro-what').slice(0, 3);
+const hot = all.filter(s => s.data.hot).sort((a, b) => a.data.hot! - b.data.hot!).slice(0, 5);
+const sceneCols = (['coin-scene', 'bag-talk', 'geek-shit'] as const).map(sec => ({
+  sec, items: rest.filter(s => s.data.section === sec && !also.includes(s)).slice(0, 3),
+})).filter(c => c.items.length);
+const bro = all.filter(s => s.data.section === 'bro-what').slice(0, 3);
+const shop = (await guides()).slice(0, 3);
+const chips = [['All', '/'], ['Crypto', '/s/coin-scene/'], ['Money', '/s/bag-talk/'], ['Tech', '/s/geek-shit/'], ['WTF', '/s/wtf/']];
+---
+<Base>
+  <Header />
+  <main>
+    <div class="wrap">
+      <nav class="chips" aria-label="Sections">
+        {chips.map(([l, h]) => <a class="chip" href={h} aria-current={h === '/' ? 'page' : undefined}>{l}</a>)}
+      </nav>
+      {lead && (
+        <section class="hero">
+          <a class="lead" href={url(lead)}>
+            <Art src={lead.data.image} alt={lead.data.imageCaption} seed={lead.id} eager />
+            <span class="label">{SECTIONS[lead.data.section]}</span>
+            <h1>{lead.data.title}</h1>
+            <p>{lead.data.dek}</p>
+            <span class="byl">{lead.data.author} · {readMins(lead)} min read</span>
+          </a>
+          {also.length > 0 && (
+            <aside class="also">
+              <h3>Also on the Scene</h3>
+              {also.map((s, i) => (
+                <a class="row" href={url(s)}>
+                  <Art src={s.data.image} seed={s.id} night={i % 2 === 1} />
+                  <span><div class="k">{SECTIONS[s.data.section]}</div><div class="t">{s.data.title}</div></span>
+                </a>
+              ))}
+            </aside>
+          )}
+        </section>
+      )}
+    </div>
+
+    {hot.length > 0 && (
+      <section class="hot">
+        <div class="wrap">
+          <div class="hot-h"><h2>HOT SHIT</h2><span class="hs">MOST READ<br />THIS WEEK</span></div>
+          <ol>{hot.map((s, i) => <li><a href={url(s)}><span class="n">0{i + 1}</span><span class="t">{s.data.title}</span></a></li>)}</ol>
+        </div>
+      </section>
+    )}
+
+    <div class="wrap">
+      {sceneCols.length > 0 && (
+        <section class="sec">
+          <div class="sec-h"><h2>THE SCENE</h2></div>
+          <div class="cols">
+            {sceneCols.map(({ sec, items: [first, ...more] }, i) => (
+              <div class="col">
+                <a class="k" href={`/s/${sec}/`}>{SECTIONS[sec]}</a>
+                <a class="main" href={url(first)}>
+                  <Art src={first.data.image} seed={first.id} night={i === 1} />
+                  <span class="t">{first.data.title}</span>
+                  <span class="d">{first.data.dek}</span>
+                </a>
+                {more.map(m => <a class="more" href={url(m)}>{m.data.title}</a>)}
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {shop.length > 0 && (
+        <section class="sec">
+          <div class="sec-h"><h2>MOBB GUIDES</h2><a href="/guides/">See all</a></div>
+          <p class="sub">Short guides we wrote so you don't have to figure it out alone. Pay once, keep forever.</p>
+          <div class="carts">{shop.map(g => <Cart guide={g} />)}</div>
+        </section>
+      )}
+
+      {bro.length > 0 && (
+        <section class="bro">
+          <div><h2>BRO, WHAT?</h2><p class="sub">Confusing money and tech stuff, explained before your chai cools down.</p></div>
+          {bro.map(s => <a class="bro-card" href={url(s)}><span class="t">{s.data.title}</span><span class="m">{readMins(s)} min read ▶</span></a>)}
+        </section>
+      )}
+    </div>
+    <Drop />
+  </main>
+  <Footer />
+</Base>

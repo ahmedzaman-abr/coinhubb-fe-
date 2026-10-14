@@ -1,0 +1,12 @@
+---
+import Art from './Art.astro';
+interface Props { guide: { id: string; data: { title: string; blurb: string; price: string; level: number; buyUrl: string; cover?: string } } }
+const { guide } = Astro.props;
+const g = guide.data;
+---
+<article class="cart">
+  <div class="cart-lbl"><Art src={g.cover} seed={guide.id} night={g.level % 2 === 1} /><span class="lvl">LVL {g.level}</span></div>
+  <h3 class="t">{g.title}</h3>
+  <p class="d">{g.blurb}</p>
+  <a class="buy" href={g.buyUrl}>GET IT · {g.price}</a>
+</article>

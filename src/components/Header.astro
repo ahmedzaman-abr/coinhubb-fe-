@@ -1,0 +1,31 @@
+---
+import Coin from './Coin.astro';
+import Ticker from './Ticker.astro';
+import site from '../data/site.json';
+const path = Astro.url.pathname;
+const nav = [
+  ['The Scene', '/s/coin-scene/'],
+  ['Bro, What?', '/s/bro-what/'],
+  ['Mobb Guides', '/guides/'],
+  ['The Drop', '/#drop'],
+];
+---
+<header>
+  <div class="wrap site-head">
+    <a class="logo" href="/" aria-label="CoinMobb home"><Coin />COINMOBB</a>
+    <span class="tl">{site.tagline}</span>
+    <nav class="nav" aria-label="Main">
+      {nav.map(([l, h]) => <a href={h} aria-current={path.startsWith(h) && h !== '/#drop' ? 'page' : undefined}>{l}</a>)}
+    </nav>
+    <div class="head-btns">
+      <button class="round fill menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="menu" data-menu>
+        <svg viewBox="0 0 24 24"><path d="M5 8h14M5 12h14M5 16h9"/></svg>
+      </button>
+      <a class="cta press" href="/#drop">JOIN THE MOBB</a>
+    </div>
+  </div>
+  <nav class="wrap menu" id="menu" aria-label="Menu">
+    {nav.map(([l, h]) => <a href={h}>{l}</a>)}
+  </nav>
+  <Ticker />
+</header>

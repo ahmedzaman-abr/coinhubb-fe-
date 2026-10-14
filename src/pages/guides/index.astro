@@ -1,0 +1,20 @@
+---
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import Drop from '../../components/Drop.astro';
+import Cart from '../../components/Cart.astro';
+import { guides } from '../../lib/content';
+const all = await guides();
+---
+<Base title="Mobb Guides" description="Short guides we wrote so you don't have to figure it out alone. Pay once, keep forever.">
+  <Header />
+  <main class="wrap">
+    <div class="page-h"><span class="label lime">Shop</span><h1>MOBB GUIDES</h1><p>Short guides we wrote so you don't have to figure it out alone. Pay once, keep forever.</p></div>
+    {all.length === 0
+      ? <p class="empty">NO GUIDES YET. LOADING NEXT LEVEL...</p>
+      : <div class="carts" style="padding-top:16px">{all.map(g => <Cart guide={g} />)}</div>}
+  </main>
+  <Drop />
+  <Footer />
+</Base>

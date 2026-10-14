@@ -1,0 +1,44 @@
+---
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import Drop from '../../components/Drop.astro';
+import Art from '../../components/Art.astro';
+import { stories, readMins, url, SECTIONS, type Story } from '../../lib/content';
+
+const BLURB: Record<string, string> = {
+  'coin-scene': 'Crypto, minus the hype and the "VIP signals".',
+  'bag-talk': 'Salary, rupees, savings and getting paid. Money stuff for real life.',
+  'geek-shit': 'AI, apps, startups and the internet, explained by people who use them.',
+  'wtf': 'The internet did something weird again. We have questions.',
+  'bro-what': 'Confusing money and tech stuff, explained before your chai cools down.',
+};
+export async function getStaticPaths() {
+  const all = await stories();
+  return Object.keys(SECTIONS).map(section => ({ params: { section }, props: { items: all.filter(s => s.data.section === section) } }));
+}
+const { section } = Astro.params as { section: keyof typeof SECTIONS };
+const { items } = Astro.props as { items: Story[] };
+const chips = [['All', '/'], ['Crypto', '/s/coin-scene/'], ['Money', '/s/bag-talk/'], ['Tech', '/s/geek-shit/'], ['WTF', '/s/wtf/'], ['Bro, What?', '/s/bro-what/']];
+---
+<Base title={SECTIONS[section]} description={BLURB[section]}>
+  <Header />
+  <main class="wrap">
+    <nav class="chips" aria-label="Sections">
+      {chips.map(([l, h]) => <a class="chip" href={h} aria-current={h === `/s/${section}/` ? 'page' : undefined}>{l}</a>)}
+    </nav>
+    <div class="page-h"><h1>{SECTIONS[section].toUpperCase()}</h1><p>{BLURB[section]}</p></div>
+    {items.length === 0
+      ? <p class="empty">NO STORIES YET. PLAYER 1, WRITE SOMETHING.</p>
+      : <div class="grid">{items.map((s, i) => (
+          <a class="col main" href={url(s)} style="text-decoration:none">
+            <Art src={s.data.image} seed={s.id} night={i % 3 === 1} />
+            <span class="t">{s.data.title}</span>
+            <span class="d">{s.data.dek}</span>
+            <span class="byl">{readMins(s)} min read</span>
+          </a>
+        ))}</div>}
+  </main>
+  <Drop />
+  <Footer />
+</Base>

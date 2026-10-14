@@ -1,0 +1,19 @@
+{
+  "name": "CoinMobb",
+  "tagline": "Money. Tech. Internet.",
+  "dropDay": "Friday",
+  "newsletterAction": "",
+  "social": {
+    "instagram": "https://instagram.com/coinmobb",
+    "tiktok": "https://tiktok.com/@coinmobb",
+    "x": "https://x.com/coinmobb"
+  },
+  "ticker": [
+    { "label": "BTC", "value": "$[PRICE]", "change": "[±%]" },
+    { "label": "ETH", "value": "$[PRICE]", "change": "[±%]" },
+    { "label": "SOL", "value": "$[PRICE]", "change": "[±%]" },
+    { "label": "USDT/PKR", "value": "[RATE]", "change": "[±%]" },
+    { "label": "USD/PKR", "value": "[RATE]", "change": "[±%]" },
+    { "label": "GOLD/TOLA", "value": "Rs [PRICE]", "change": "[±%]" }
+  ]
+}

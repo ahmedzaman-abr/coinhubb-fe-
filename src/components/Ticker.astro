@@ -1,0 +1,12 @@
+---
+import site from '../data/site.json';
+const items = site.ticker;
+---
+<div class="ticker" aria-label="Prices">
+  <span class="live"><i></i>LIVE-ISH</span>
+  <div style="overflow:hidden;flex:1">
+    <div class="track">
+      {[0, 1].map(k => items.map(t => <span aria-hidden={k === 1 ? 'true' : undefined}>{t.label} {t.value} <em>{t.change}</em></span>))}
+    </div>
+  </div>
+</div>

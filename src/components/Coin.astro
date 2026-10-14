@@ -1,0 +1,10 @@
+---
+// 12x12 pixel coin, the CoinMobb mark.
+interface Props { fg?: string; fill?: string; class?: string }
+const { fg = '#11110E', fill = '#C6F332', class: cls } = Astro.props;
+const COIN = ["....XXXX....","..XXLLLLXX..",".XLLLLLLLLX.",".XLLXXXXLLX.","XLLX....LLLX","XLLX.......X","XLLX.......X","XLLX....LLLX",".XLLXXXXLLX.",".XLLLLLLLLX.","..XXLLLLXX..","....XXXX...."];
+const px = COIN.flatMap((row, y) => [...row].map((c, x) => ({ c, x, y }))).filter(p => p.c !== '.');
+---
+<svg class={cls} viewBox="0 0 12 12" shape-rendering="crispEdges" aria-hidden="true">
+  {px.map(p => <rect x={p.x} y={p.y} width="1" height="1" fill={p.c === 'X' ? fg : fill} />)}
+</svg>

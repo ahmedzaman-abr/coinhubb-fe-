@@ -1,0 +1,22 @@
+---
+import site from '../data/site.json';
+interface Props { heading?: string }
+const { heading = "The week's money, tech and internet stuff in your inbox." } = Astro.props;
+---
+<section class="drop" id="drop">
+  <div class="wrap">
+    <div>
+      <span class="k">The Drop · every {site.dropDay}</span>
+      <h2>{heading}</h2>
+    </div>
+    <div style="display:grid;gap:8px">
+      <form method="post" action={site.newsletterAction || undefined} data-drop>
+        <label for="drop-email">Your email</label>
+        <input id="drop-email" name="email" type="email" required placeholder="you@example.com" autocomplete="email" />
+        <button class="start" type="submit">JOIN THE MOBB<span class="blink">_</span></button>
+      </form>
+      <small>No spam. No "guaranteed returns". Unsubscribe whenever.</small>
+      <span class="msg" role="status" data-drop-msg></span>
+    </div>
+  </div>
+</section>
